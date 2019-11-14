@@ -403,7 +403,7 @@ final class StringConcatHelper {
                                         + " bytes left - UTF16 String is \"" + new String(buf, String.UTF16) + "\"");
             } else {
                 throw new InternalError("Storage is not completely initialized, " + (int)indexCoder
-                                        + " bytes left - LATIN1 String is \"" + new String(buf, String.LATIN1) + "\""
+                                        + " bytes left - LATIN1 String is \"" + new String(buf, String.LATIN1) + "\"");
             }
         }
     }
