@@ -398,21 +398,24 @@ final class StringConcatHelper {
         } else if (indexCoder == UTF16) {
             return new String(buf, String.UTF16);
         } else {
+            String dumpCreated;
             try {
                 Class dumpClass = Class.forName("com.ibm.jvm.Dump");
                 java.lang.reflect.Method jDumpMethod = dumpClass.getMethod("JavaDump");
                 java.lang.reflect.Method sDumpMethod = dumpClass.getMethod("SystemDump");
                 jDumpMethod.invoke(null);
                 sDumpMethod.invoke(null);
+                dumpCreated = "Created dump";
             } catch (Throwable t) {
+                dumpCreated = "Failed to create dump";
             }
             
             if ((indexCoder & UTF16) != 0) {
                 throw new InternalError("Storage is not completely initialized, " + (int)indexCoder
-                                        + " bytes left - UTF16 String is \"" + new String(buf, String.UTF16) + "\"");
+                                        + " bytes left - UTF16 String is \"" + new String(buf, String.UTF16) + "\" "+dumpCreated);
             } else {
                 throw new InternalError("Storage is not completely initialized, " + (int)indexCoder
-                                        + " bytes left - LATIN1 String is \"" + new String(buf, String.LATIN1) + "\"");
+                                        + " bytes left - LATIN1 String is \"" + new String(buf, String.LATIN1) + "\" "+dumpCreated);
             }
         }
     }
