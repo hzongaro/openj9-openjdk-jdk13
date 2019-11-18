@@ -424,14 +424,26 @@ final class StringConcatHelper {
         String s2 = stringOf(second);
         // start "mixing" in length and coder or arguments, order is not
         // important
-        long indexCoder = mix(initialCoder(), s2);
+        long initCoder = initialCoder();
+        long indexCoder = mix(initCoder, s2);
+        long s2Coder = indexCoder;
         indexCoder = mix(indexCoder, s1);
+        long s1Coder = indexCoder;
         byte[] buf = newArray(indexCoder);
         // prepend each argument in reverse order, since we prepending
         // from the end of the byte array
         indexCoder = prepend(indexCoder, buf, s2);
+        long postPrependS2Coder = indexCoder;
         indexCoder = prepend(indexCoder, buf, s1);
+        if ((int) indexCoder != 0) {
+            report(initCoder, s2Coder, s1Coder, postPrependS2Coder, indexCoder);
+        }
         return newString(buf, indexCoder);
+    }
+    
+    static void report(long initCoder, long s2Coder, long s1Coder, long postPrependS2Coder, long postPrependS1Coder) {
+        throw new InternalError("In report initCoder == "+initCoder+"; s2Coder == "+s2Coder+"; s1Coder == "+s1Coder
+                                +"; postPrependS2Coder == "+postPrependS2Coder+"; postPrependS1Coder == "+postPrependS1Coder);
     }
 
     /**
